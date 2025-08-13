@@ -42,9 +42,9 @@ class List
         
         void push(float data); 
         void append(float data); 
-        void insertAfter(Node* prev_node, float data); 
 
-        void deleteNode(Node* node);
+        void removeAtEnd(void);
+        void removeAtFront(void);
         
         int getSize(void); 
         bool isEmpty(void);

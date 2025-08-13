@@ -192,6 +192,9 @@ void List::print()
         std::cout << currentNode->getData() << " -> "; 
         currentNode = currentNode->getNext(); 
     }
+
+    std::cout << std::endl; 
+
 }
 
 
@@ -225,5 +228,113 @@ bool List::isEmpty()
     
 }
 
+/*****************************************************************************
+ *
+ * Method:    getSize
+ *
+ * Description: Returns list size. 
+ *
+ * Parameters:
+ *      None
+ * 
+ * Return: 
+ *      Bool
+ *
+ * Caveats:
+ *    
+ *
+ *****************************************************************************/
+
+int List::getSize(void)
+{
+    return this->size; 
+}
+
+
+/*****************************************************************************
+ *
+ * Method:    removeAtEnd
+ *
+ * Description:  Removes the tail element
+ *
+ * Parameters:
+ *      None
+ * 
+ * Return: 
+ *      None
+ *
+ * Caveats:
+ *    
+ *
+ *****************************************************************************/
+
+void List::removeAtEnd(void)
+{
+    if(this->isEmpty())
+    {
+        std::cout << "Nothing to remove, the list is empty." << std::endl;
+        return; 
+    }
+    else if (this->head == this->tail) /* List has only one element*/
+    {
+        delete this->head; 
+        this->head = nullptr; 
+        this->tail = nullptr;
+        this->size--; 
+    }
+    else
+    {
+        /* List has more than one element*/
+        Node* newTail = this->tail->getPrev();
+        newTail->setNext(nullptr);
+
+        Node* nodeToDelete = this->tail; 
+        delete nodeToDelete;
+        this->size--;  
+    }
+}
+
+/*****************************************************************************
+ *
+ * Method:    removeAtFront
+ *
+ * Description:  Removes the head element.
+ *
+ * Parameters:
+ *      None
+ * 
+ * Return: 
+ *      None
+ *
+ * Caveats:
+ *    
+ *
+ *****************************************************************************/
+
+void List::removeAtFront(void)
+{
+    if(this->isEmpty())
+    {
+        std::cout << "Nothing to remove, the list is empty." << std::endl;
+        return; 
+    }
+    else if (this->head == this->tail) /* List has only one element*/
+    {
+        delete this->head; 
+        this->head = nullptr; 
+        this->tail = nullptr;
+        this->size--; 
+    }
+    else
+    {
+        /* List has more than one element*/
+        Node* oldHead = this->head; 
+        this->head = this->head->getNext(); 
+        this->head->setPrev(nullptr);
+
+        delete oldHead;
+        this->size--;  
+    }
+}
 
 
