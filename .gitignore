@@ -1,0 +1,3 @@
+# **/Bld/: Matches any Bld directory at any level within the project directory.
+# *: Matches everything within those Bld directories.
+**/Bld/*
