@@ -59,5 +59,26 @@ int main (int argc, char* argv[])
     myList->print(); 
     std::cout << "List size is: " << myList->getSize() << std::endl;
     
+    myList->push(40.0f);
+    myList->print(); 
+    std::cout << "List size is: " << myList->getSize() << std::endl;
+
+    myList->removeAtEnd();
+    myList->print(); 
+    std::cout << "List size is: " << myList->getSize() << std::endl;
+
+    myList->removeAtEnd();
+    myList->print(); 
+    std::cout << "List size is: " << myList->getSize() << std::endl;
+
+    myList->removeAtEnd(); 
+
+    myList->print(); 
+    std::cout << "List size is: " << myList->getSize() << std::endl;
+
+    myList->push(200.0f);
+    myList->print(); 
+    std::cout << "List size is: " << myList->getSize() << std::endl;
+
     return 0; 
 }

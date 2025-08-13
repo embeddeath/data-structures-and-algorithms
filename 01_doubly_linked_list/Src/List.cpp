@@ -277,7 +277,7 @@ void List::removeAtEnd(void)
     }
     else if (this->head == this->tail) /* List has only one element*/
     {
-        delete this->head; 
+        //delete this->head;  We need at least one member.
         this->head = nullptr; 
         this->tail = nullptr;
         this->size--; 
@@ -290,6 +290,8 @@ void List::removeAtEnd(void)
 
         Node* nodeToDelete = this->tail; 
         delete nodeToDelete;
+
+        this->tail = newTail; 
         this->size--;  
     }
 }
@@ -320,7 +322,7 @@ void List::removeAtFront(void)
     }
     else if (this->head == this->tail) /* List has only one element*/
     {
-        delete this->head; 
+        //delete this->head; We need at least one member 
         this->head = nullptr; 
         this->tail = nullptr;
         this->size--; 
