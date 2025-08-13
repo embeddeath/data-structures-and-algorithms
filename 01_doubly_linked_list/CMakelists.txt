@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 
 # Configure Project
-project( 00_project_template
-        DESCRIPTION "This is the project template, replace project name and description"
+project( 01_doubly_linked_list
+        DESCRIPTION "Doubly linked list implementation."
         LANGUAGES CXX 
 )
 
@@ -24,8 +24,9 @@ add_executable(${CMAKE_PROJECT_NAME})
 
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     Src/main.cpp
-    Src/file.cpp
-)
+    Src/Node.cpp
+    Src/List.cpp
+    )
 
 
 # Include the header files directory

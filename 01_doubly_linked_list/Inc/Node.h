@@ -47,7 +47,7 @@ class Node
         float data; 
         Node* next; 
         Node* prev; 
-}
+};
 
 /***********************************************************
     Function Definitions

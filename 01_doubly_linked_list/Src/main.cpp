@@ -10,7 +10,7 @@
 ************************************************************/
 #include <iostream>
 #include <string>
-#include "file.hpp"
+#include "List.h"
 
 /***********************************************************
     Type Definitions
@@ -39,5 +39,13 @@
 
 int main (int argc, char* argv[])
 {
+    List* myList = new List(); 
+
+    myList->append(10.0f); 
+    myList->append(20.0f);
+    myList->append(30.0f);
+
+    myList->print();  
+
     return 0; 
 }

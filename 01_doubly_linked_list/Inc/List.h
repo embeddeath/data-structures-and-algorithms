@@ -1,7 +1,7 @@
 #pragma once
 /***********************************************************
-    File: Node.h
-    Description: Interface definition for Node class, DLL member. 
+    File: List.h
+    Description: Interface definition for doubly linked list class. 
     Author: Miguel Márquez
     Date: 8/13/2025
 
@@ -9,7 +9,7 @@
 /***********************************************************
     Includes
 ************************************************************/
-
+#include "Node.h"
 /***********************************************************
     Type Definitions
 ************************************************************/
@@ -29,25 +29,27 @@
 /***********************************************************
     Class Declarations and Definitions
 ************************************************************/
-
-class Node
+class List 
 {
-    public:
-        Node(float data); 
-        void setData(float data);     
-        float getData(void);
+    private:
+        Node* head; 
+        Node* tail;
+        int size; 
+    
+    public :
+        List();
+        ~List();
         
-        Node* getNext(void);
-        void setNext(Node* next);
+        void push(float data); 
+        void append(float data); 
+        void insertAfter(Node* prev_node, float data); 
 
-        Node* getPrev(void);
-        void setPrev(Node* prev);
-
-    private: 
-        float data; 
-        Node* next; 
-        Node* prev; 
-}
+        void deleteNode(Node* node);
+        
+        int getSize(void); 
+        bool isEmpty(void);
+        void print(void);  
+};
 
 /***********************************************************
     Function Definitions
