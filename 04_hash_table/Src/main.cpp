@@ -42,6 +42,7 @@ int main()
     HashTable ht;
 
     ht.insert("Miguel");
+    ht.insert("Miguel");
     ht.insert("Ruben");
     ht.insert("Mariana");
     ht.insert("Fernanda");
