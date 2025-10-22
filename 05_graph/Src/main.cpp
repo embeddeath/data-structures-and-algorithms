@@ -10,6 +10,7 @@
 ************************************************************/
 #include <iostream>
 #include "AdjacencyMatrixGraph.hpp"
+#include "AdjacencyListGraph.hpp"
 
 using std::cout; 
 using std::endl; 
@@ -113,7 +114,7 @@ void testAdjacencyMatrixGraph()
     cout << "\nOut-degree of vertex 0: " << g.getOutDegree(0) << endl;
 
     auto adj = g.getOutAdjacency(0);
-    
+
     cout << "Out-adjacency of vertex 0: ";
     for (int v : adj)
         cout << v << " ";
@@ -142,8 +143,67 @@ void testAdjacencyMatrixGraph()
     cout << "=== Graph Test End ===" << endl;
 }
 
+void testAdjacencyListGraph() {
+    cout << "=== TEST DE GRAFO ===" << endl;
+
+    // 1. Crear grafo con 4 vértices
+    AdjacencyListGraph g(4);
+
+    // 2. Añadir aristas
+    g.addEdge(0, 1, 10);
+    g.addEdge(0, 2, 5);
+    g.addEdge(1, 2, 2);
+    g.addEdge(2, 3, 1);
+
+    cout << "\nGrafo inicial:" << endl;
+    g.print();
+
+    // 3. Revisar si existen aristas
+    cout << "\nRevisar aristas:" << endl;
+    cout << "0-1? " << g.isEdge(0, 1) << endl;
+    cout << "1-3? " << g.isEdge(1, 3) << endl;
+
+    // 4. Obtener grado de salida
+    for (int i = 0; i < 4; i++)
+        cout << "Out-degree de " << i << ": " << g.getOutDegree(i) << endl;
+
+    // 5. Obtener vecinos
+    for (int i = 0; i < 4; i++)
+    {
+        vector<int> neighbors = g.getOutAdjacency(i);
+        cout << "Vecinos de " << i << ": ";
+        for (int n : neighbors) cout << n << " ";
+        cout << endl;
+    }
+
+    // 6. Añadir un vértice extra
+    g.addVertex();
+    g.addEdge(4, 0, 7);
+    cout << "\nGrafo tras agregar vértice 4 y arista 4-0:" << endl;
+    g.print();
+
+    // 7. Eliminar una arista
+    g.removeEdge(0, 2);
+    cout << "\nGrafo tras eliminar arista 0-2:" << endl;
+    g.print();
+
+    // 8. Eliminar un vértice
+    g.removeVertex(1);
+    cout << "\nGrafo tras eliminar vértice 1:" << endl;
+    g.print();
+
+    // 9. Imprimir DOT en consola
+    cout << "\nDOT representation:" << endl;
+    g.printDot();
+
+    // 10. Exportar DOT a archivo
+    g.exportDot();
+
+    cout << "\n=== FIN DE PRUEBA ===" << endl;
+}
+
 int main (int argc, char* argv[])
 {
-    testAdjacencyMatrixGraph(); 
+    testAdjacencyListGraph(); 
     return 0;
 }
