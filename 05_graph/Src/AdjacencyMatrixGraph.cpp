@@ -74,12 +74,74 @@ void AdjacencyMatrixGraph::addVertex()
 void AdjacencyMatrixGraph::removeEdge(int u, int v)
 {
     matrix[u][v] = 0; 
-    matrix[u][v] = 0; 
+    matrix[v][u] = 0; 
+}
+
+void AdjacencyMatrixGraph::removeVertex(int v)
+{
+    if (v < 0 || v >= numVertices)
+    {
+        cerr << "Error: Vertex " << v << "does not exist. \n"; 
+    }
+
+    /* Remove row*/
+    matrix.erase(matrix.begin() + v);
+
+    /* Remove column */
+    for(unsigned int i = 0; i < matrix.size(); i++)
+    { 
+        matrix[i].erase(matrix[i].begin() + v);
+        
+    }
+
+    numVertices--; 
 }
 
 bool AdjacencyMatrixGraph::isEdge(int u, int v) const
 {
     return matrix[u][v] != 0; 
+}
+
+int AdjacencyMatrixGraph::getOutDegree(int u) const
+{
+    if (u < 0 || u >= numVertices)
+    {
+        cerr << "Error: Vertex " << u << " does not exist.\n";
+        return -1;
+    }
+
+    int degree = 0;
+
+    for (int v = 0; v < numVertices; v++)
+    {
+        if (matrix[u][v] != 0)
+        {
+            degree++;
+        }
+    }
+    return degree;
+}
+
+/* Return vertexes that are directly connected.*/
+vector<int> AdjacencyMatrixGraph::getOutAdjacency(int u) const
+{
+    if (u < 0 || u >= numVertices)
+    {
+        cerr << "Error: Vertex " << u << " does not exist.\n";
+        return {};
+    }
+
+    std::vector<int> adjacency;
+
+    for (int v = 0; v < numVertices; v++)
+    {
+        if (matrix[u][v] != 0)
+        {
+            adjacency.push_back(v);
+        }
+    }
+
+    return adjacency;
 }
 
 void AdjacencyMatrixGraph::print() const

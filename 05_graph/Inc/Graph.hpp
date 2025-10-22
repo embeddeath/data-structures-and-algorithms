@@ -9,7 +9,9 @@
 /***********************************************************
     Includes
 ************************************************************/
+#include "vector"
 
+using std::vector; 
 /***********************************************************
     Type Definitions
 ************************************************************/
@@ -49,8 +51,11 @@ class Graph
         virtual void addEdge(int u, int v, int weight = 1) = 0; 
         virtual void addVertex(void) = 0; 
         virtual void removeEdge(int u, int v) = 0; 
+        virtual void removeVertex(int v) = 0;  
         virtual bool isEdge(int u, int v) const = 0; 
-        virtual void print(void) const = 0; 
+        virtual int getOutDegree(int u) const = 0; 
+        virtual vector<int> getOutAdjacency(int u) const = 0;  
+        virtual void print(void) const = 0;
         virtual void printDot(void) const = 0; 
         virtual void exportDot(void) const = 0; 
 };

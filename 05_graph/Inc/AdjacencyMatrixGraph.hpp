@@ -51,9 +51,12 @@ class AdjacencyMatrixGraph : public Graph
 
         /* override ensures we are implementing a virtual function from Graph*/
         void addEdge(int u, int v, int weight = 1) override; 
-        void addVertex(void);
-        void removeEdge(int u, int v) override; 
+        void addVertex(void) override;
+        void removeEdge(int u, int v) override;
+        void removeVertex(int v) override;  
         bool isEdge(int u, int v) const override; /* const prevents the method to modify the object*/
+        int getOutDegree(int u) const override; 
+        vector<int> getOutAdjacency(int u) const override; 
         void print(void) const override; 
         void printDot(void) const override;
         void exportDot(void) const override; 
