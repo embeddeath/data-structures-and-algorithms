@@ -112,7 +112,7 @@ void AdjacencyListGraph::removeVertex(int v)
     // Step 3: Decrement total vertex count.
     numVertices--;
 
-    // 🌟 Step 4: CRITICAL CORRECTION - Update all remaining neighbor IDs. 🌟
+    // Update all remaining neighbor IDs. 
     // Fix all edge targets (neighbor IDs) that were originally greater than v.
     for (int u = 0; u < numVertices; u++) // Loop through the remaining vertices
     {

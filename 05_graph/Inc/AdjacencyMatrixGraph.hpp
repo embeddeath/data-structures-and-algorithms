@@ -43,9 +43,8 @@ using std::vector;
  */
 class AdjacencyMatrixGraph : public Graph
 {
-    private:
-        vector<vector<int>> matrix; 
-    
+    protected:
+        vector<vector<int>> matrix;     
     public: 
         explicit AdjacencyMatrixGraph(int vertices); 
 

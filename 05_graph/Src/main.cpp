@@ -11,9 +11,15 @@
 #include <iostream>
 #include "AdjacencyMatrixGraph.hpp"
 #include "AdjacencyListGraph.hpp"
+#include "RyanAirGraph.hpp"
+#include "fstream"
+
 
 using std::cout; 
 using std::endl; 
+using std::cerr; 
+using std::fstream; 
+using std::string; 
 /***********************************************************
     Type Definitions
 ************************************************************/
@@ -72,7 +78,7 @@ void circularGraphTest()
     AdjacencyMatrixGraph g(4);
 
     // Add edges to form a circular graph
-    g.addEdge(0, 1);
+    g.addEdge(0, 1, 3);
     g.addEdge(1, 2);
     g.addEdge(2, 3);
     g.addEdge(3, 0);
@@ -202,8 +208,28 @@ void testAdjacencyListGraph() {
     cout << "\n=== FIN DE PRUEBA ===" << endl;
 }
 
+void test2()
+{
+    AdjacencyListGraph g(4); 
+    g.addEdge(0, 1, 10);
+    g.addEdge(0, 2, 5);
+    g.exportDot(); 
+}
+
+
+void ryanAirGraphTest()
+{
+    RyanAirGraph myGraph(0);
+    
+    myGraph.parseAndre(); 
+    myGraph.exportDot(); 
+}
+
+
+
+
 int main (int argc, char* argv[])
 {
-    testAdjacencyListGraph(); 
-    return 0;
+    //test2(); 
+    ryanAirGraphTest(); 
 }
