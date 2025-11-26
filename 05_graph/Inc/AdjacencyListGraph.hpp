@@ -110,6 +110,9 @@ public:
 
     /* DLS (LLama internamente a la función con límite*/
     std::vector<int> findPathDLS(int startVertex, int endVertex, int limit) const;
+
+    /* DFS iterativo*/
+    std::vector<int> findPathDFSIterative(int startVertex, int endVertex) const;
 };
 
 

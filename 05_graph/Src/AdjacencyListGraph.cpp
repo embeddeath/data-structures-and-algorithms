@@ -14,6 +14,7 @@
 #include <algorithm> // for remove_if
 #include <string>
 #include <queue>
+#include <stack>
 
 using std::cout;
 using std::endl;
@@ -22,6 +23,7 @@ using std::cerr;
 using std::string; 
 using std::queue; 
 using std::priority_queue; 
+using std::stack; 
 /***********************************************************
     Class Definitions
 ************************************************************/
@@ -606,6 +608,87 @@ std::vector<int> AdjacencyListGraph::findPathDLS(int startVertex, int endVertex,
 
         // El camino se construyó de fin a inicio, se revierte.
         std::reverse(path.begin(), path.end()); 
+    }
+
+    return path;
+}
+
+vector<int> AdjacencyListGraph::findPathDFSIterative(int startVertex, int endVertex) const
+{
+    vector<int> path;
+
+    // 1. Validaciones y Casos Base
+    if (startVertex < 0 || startVertex >= numVertices || endVertex < 0 || endVertex >= numVertices) 
+    {
+        return path;
+    }
+    if (startVertex == endVertex)
+    {
+        return {startVertex};
+    }
+
+    // 2. Inicializar estructuras
+    // Pila explícita para la búsqueda: almacena los nodos a visitar.
+    stack<int> s; 
+    
+    // Rastrea los nodos visitados y el predecesor para reconstruir el camino.
+    vector<bool> visited(numVertices, false);
+    vector<int> parent(numVertices, -1);
+    
+    // Inicializar el nodo de partida
+    s.push(startVertex);
+    visited[startVertex] = true;
+    parent[startVertex] = startVertex; // Marcar como el nodo raíz para la reconstrucción
+
+    bool found = false;
+
+    // 3. Proceso Iterativo de DFS
+    while (!s.empty())
+    {
+        int u = s.top();
+        s.pop();
+
+        // Si encontramos el objetivo
+        if (u == endVertex)
+        {
+            found = true;
+            break; 
+        }
+
+        // Recorrer vecinos: la clave es empujar los vecinos a la pila.
+        // Ojo: Para obtener el mismo orden de DFS que la recursiva (que a menudo 
+        // visita el primer vecino primero), a veces es necesario recorrer 
+        // la lista de adyacencia al revés si se usa una lista estándar. 
+        // Aquí asumiremos que el orden estándar es suficiente.
+        for (const auto& edge : adjList[u])
+        {
+            int neighbor = edge.first;
+            
+            if (!visited[neighbor])
+            {
+                visited[neighbor] = true;
+                parent[neighbor] = u;
+                s.push(neighbor);
+            }
+        }
+    }
+
+    // 4. Reconstrucción del Camino (la misma lógica usada en el DLS corregido)
+    if (found)
+    {
+        int curr = endVertex;
+        while (curr != -1 && parent[curr] != curr) 
+        {
+            path.push_back(curr);
+            curr = parent[curr];
+        }
+        
+        if (curr != -1)
+        {
+             path.push_back(curr);
+        }
+
+        reverse(path.begin(), path.end()); 
     }
 
     return path;

@@ -595,6 +595,60 @@ void DLSTest()
     cout << "========================================" << endl;
 }
 
+void DFSIterativeTest()
+{
+    cout << "\n========================================" << endl;
+    cout << "       INICIO DE PRUEBAS DFS ITERATIVO" << endl;
+    cout << "========================================" << endl;
+
+    // Grafo (7 vértices: 0 a 6)
+    AdjacencyListGraph g(7);
+
+    // Camino: 0 -> 1 -> 2 -> 3 (Profundo)
+    g.addEdge(0, 1, 1);
+    g.addEdge(1, 2, 1);
+    g.addEdge(2, 3, 1);
+
+    // Camino alternativo: 0 -> 4 -> 5 -> 6 (Largo y más a la derecha)
+    g.addEdge(0, 4, 1);
+    g.addEdge(4, 5, 1);
+    g.addEdge(5, 6, 1);
+    
+    // Conexión del 2 al 6
+    g.addEdge(2, 6, 1); 
+
+    cout << "--- Estructura del Grafo ---" << endl;
+    g.print();
+    
+    int start = 0;
+    int end = 6; // Objetivo: nodo 6
+
+    cout << "\n--- Ejecutando DFS Iterativo: 0 -> 6 ---" << endl;
+    vector<int> path = g.findPathDFSIterative(start, end);
+
+    if (!path.empty())
+    {
+        cout << "  [EXITO]: Camino encontrado (Longitud: " << path.size() - 1 << "): ";
+        for (size_t i = 0; i < path.size(); ++i)
+        {
+            cout << path[i] << (i < path.size() - 1 ? " -> " : "");
+        }
+        cout << endl;
+        // La DFS debería encontrar: 0 -> 1 -> 2 -> 6 (3 saltos) o 0 -> 4 -> 5 -> 6 (3 saltos), 
+        // dependiendo del orden de la lista de adyacencia en 0.
+    }
+    else
+    {
+        cout << "  [FALLO]: No se encontró camino de " << start << " a " << end << "." << endl;
+    }
+
+    cout << "========================================" << endl;
+    cout << "         FIN DE PRUEBAS DFS ITERATIVO" << endl;
+    cout << "========================================" << endl;
+}
+
+
+
 int main(int argc, char* argv[])
 {
     DFStest(); 
@@ -602,4 +656,5 @@ int main(int argc, char* argv[])
     BFStest();
     PrimTest(); 
     DLSTest();
+    DFSIterativeTest(); 
 }
