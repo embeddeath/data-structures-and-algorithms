@@ -195,9 +195,8 @@ void AdjacencyListGraph::printDot() const
     }
 }
 
-void AdjacencyListGraph::exportDot() const
+void AdjacencyListGraph::exportDot(string filename) const
 {
-    string filename = "graph_list.dot";
     ofstream file(filename);
 
     if (!file.is_open())
@@ -208,6 +207,7 @@ void AdjacencyListGraph::exportDot() const
 
     file << "graph G {\n";
 
+    // 1. Imprimir todas las aristas
     for (int i = 0; i < numVertices; i++)
     {
         for (const auto &edge : adjList[i])
@@ -222,8 +222,92 @@ void AdjacencyListGraph::exportDot() const
         }
     }
 
+    // 2. Imprimir nodos desconectados:
+    //    Si un nodo no tiene ninguna arista, se imprime solo.
+    for (int i = 0; i < numVertices; i++)
+    {
+        if (adjList[i].empty())  // sin vecinos
+        {
+            file << "    " << i << ";\n";
+        }
+    }
+
     file << "}\n";
     file.close();
 
     cout << "DOT file written to " << filename << endl;
+}
+
+
+/***********************************************************
+     DFS Pathfinding Implementation
+************************************************************/
+
+// Función auxiliar recursiva para DFS con construcción de la tabla de padres.
+void AdjacencyListGraph::DFSPathUtil(int u, int target, vector<bool>& visited, vector<int>& parent, bool& found) const
+{
+    if (found) return; // Si el destino ya fue encontrado, se detiene la recursión
+
+    visited[u] = true;
+
+    if (u == target)
+    {
+        found = true;
+        return;
+    }
+
+    // Recorrer todos los vecinos (aristas) del vértice 'u'
+    for (unsigned int i = 0; i < adjList[u].size(); i++)
+    {
+        int neighbor = adjList[u][i].first; 
+
+        if (!visited[neighbor])
+        {
+            // ¡Clave! Registrar que 'u' es el padre de 'neighbor'
+            parent[neighbor] = u; 
+            DFSPathUtil(neighbor, target, visited, parent, found);
+            if (found) return; // Propagar la señal de encontrado hacia arriba
+        }
+    }
+}
+
+// Función pública para encontrar y reconstruir el camino.
+vector<int> AdjacencyListGraph::findPathDFS(int startVertex, int endVertex) const
+{
+    vector<int> path;
+    if (startVertex < 0 || endVertex < 0 || startVertex >= numVertices || endVertex >= numVertices)
+    {
+        cerr << "Error: Invalid start or end vertex for path search.\n";
+        return path;
+    }
+    if (startVertex == endVertex)
+    {
+        path.push_back(startVertex);
+        return path;
+    }
+
+    // 1. Inicializar estructuras
+    vector<bool> visited(numVertices, false);
+    // Inicializar la tabla de padres con -1 (o algún valor inválido)
+    vector<int> parent(numVertices, -1); 
+    bool found = false;
+    
+    // 2. Ejecutar la búsqueda (que ahora también construye la tabla de padres)
+    DFSPathUtil(startVertex, endVertex, visited, parent, found);
+    
+    // 3. Reconstruir el camino a partir de la tabla de padres (retrocediendo)
+    if (found)
+    {
+        int curr = endVertex;
+        // Se detiene al llegar al nodo inicial, cuyo padre es -1.
+        while (curr != -1) 
+        {
+            path.push_back(curr);
+            curr = parent[curr];
+        }
+        // El camino se construyó de destino a origen, por lo que se invierte.
+        std::reverse(path.begin(), path.end()); 
+    }
+
+    return path;
 }

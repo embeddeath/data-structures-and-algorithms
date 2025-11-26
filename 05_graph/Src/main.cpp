@@ -68,7 +68,7 @@ void test1()
 
     // Print in DOT format
     cout << "\nDOT format output:\n";
-    g.exportDot();
+    g.exportDot("file.dot");
 
 }
 
@@ -88,7 +88,7 @@ void circularGraphTest()
     g.print();
 
     // Generate DOT file
-    g.exportDot();
+    g.exportDot("file.dot");
 
     cout << "\n'graph.dot' created. Use Graphviz to generate PDF.\n";
 
@@ -144,7 +144,7 @@ void testAdjacencyMatrixGraph()
 
     // Export to DOT file
     cout << "\nExporting to DOT..." << endl;
-    g.exportDot();
+    g.exportDot("file.dot");
 
     cout << "=== Graph Test End ===" << endl;
 }
@@ -203,7 +203,7 @@ void testAdjacencyListGraph() {
     g.printDot();
 
     // 10. Exportar DOT a archivo
-    g.exportDot();
+    g.exportDot("file.dot");
 
     cout << "\n=== FIN DE PRUEBA ===" << endl;
 }
@@ -213,7 +213,7 @@ void test2()
     AdjacencyListGraph g(4); 
     g.addEdge(0, 1, 10);
     g.addEdge(0, 2, 5);
-    g.exportDot(); 
+    g.exportDot("file.dot"); 
 }
 
 
@@ -222,14 +222,78 @@ void ryanAirGraphTest()
     RyanAirGraph myGraph(0);
     
     myGraph.parseAndre(); 
-    myGraph.exportDot(); 
+    myGraph.exportDot("file.dot"); 
 }
 
 
+void DFStest()
+{
+    cout << "========================================" << endl;
+    cout << "         INICIO DE PRUEBAS DFS PATH" << endl;
+    cout << "========================================" << endl;
 
+    // 1. Creación del Grafo de Prueba (7 vértices: 0 a 6)
+    AdjacencyListGraph g(7);
 
+    // Añadir aristas 
+    g.addEdge(0, 1, 1);
+    g.addEdge(0, 2, 1);
+    g.addEdge(1, 3, 2);
+    g.addEdge(2, 4, 3);
+    g.addEdge(3, 5, 1);
+    g.addEdge(4, 5, 5);
+
+    cout << "--- Estructura del Grafo ---" << endl;
+    g.print();
+    g.exportDot("dfspathtest.txt"); 
+    // 2. Prueba de Búsqueda de Camino (Función findPathDFS)
+
+    // Caso A: Camino Existente (0 -> 5)
+    int startA = 0;
+    int endA = 5;
+    cout << "\n--- Prueba de Camino Existente (" << startA << " -> " << endA << ") ---" << endl;
+    vector<int> pathA = g.findPathDFS(startA, endA);
+    
+    if (!pathA.empty())
+    {
+        cout << "Camino encontrado: ";
+        for (unsigned int i = 0; i < pathA.size(); ++i)
+        {
+            cout << pathA[i];
+            if (i < pathA.size() - 1)
+            {
+                cout << " -> ";
+            }
+        }
+        cout << endl;
+    }
+    else
+    {
+        cout << "Error: No se encontró el camino, pero debería existir." << endl;
+    }
+
+    // Caso B: Camino No Existente (Vértice 6 es nuevo y está desconectado)
+    g.addVertex(); // Nuevo vértice 6
+    int startB = 0;
+    int endB = 6;
+    cout << "\n--- Prueba de Camino No Existente (" << startB << " -> " << endB << ") ---" << endl;
+    
+    vector<int> pathB = g.findPathDFS(startB, endB);
+    
+    if (pathB.empty())
+    {
+        cout << "Prueba Exitosa: El camino entre " << startB << " y " << endB << " NO se encontró (esperado)." << endl;
+    }
+    else
+    {
+        cout << "Error: Se encontró un camino, lo cual no debería haber ocurrido." << endl;
+    }
+    
+    cout << "========================================" << endl;
+    cout << "         FIN DE PRUEBAS DFS PATH" << endl;
+    cout << "========================================" << endl;
+}
 int main (int argc, char* argv[])
 {
-    //test2(); 
-    ryanAirGraphTest(); 
+    DFStest(); 
 }

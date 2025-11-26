@@ -177,9 +177,9 @@ void AdjacencyMatrixGraph::printDot() const
     }
 }
 
-void AdjacencyMatrixGraph::exportDot() const {
+void AdjacencyMatrixGraph::exportDot(string filename) const {
 
-    string filename = "graph.dot";
+    //string filename = "graph.dot";
     
     ofstream file(filename);
 

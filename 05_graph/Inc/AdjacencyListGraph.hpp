@@ -49,6 +49,9 @@ class AdjacencyListGraph : public Graph
 private:
     vector<vector<pair<int,int>>> adjList;
 
+    /* Search algorithm helpers*/
+    void DFSPathUtil(int u, int target, vector<bool>& visited, vector<int>& parent, bool& found) const;
+
 public:
     explicit AdjacencyListGraph(int vertices);
 
@@ -60,8 +63,11 @@ public:
     int getOutDegree(int u) const override;
     vector<int> getOutAdjacency(int u) const override;
     void print() const override;
-    void printDot() const override;
-    void exportDot() const override;
+    void printDot(void) const override;
+    void exportDot(string filename) const override;
+
+    /* Search algorithms*/
+    vector<int> findPathDFS(int startVertex, int endVertex) const;
 };
 /***********************************************************
     Function Definitions

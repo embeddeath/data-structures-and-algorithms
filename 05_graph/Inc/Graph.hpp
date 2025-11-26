@@ -10,8 +10,10 @@
     Includes
 ************************************************************/
 #include "vector"
+#include "string"
 
 using std::vector; 
+using std::string; 
 /***********************************************************
     Type Definitions
 ************************************************************/
@@ -56,8 +58,8 @@ class Graph
         virtual int getOutDegree(int u) const = 0; 
         virtual vector<int> getOutAdjacency(int u) const = 0;  
         virtual void print(void) const = 0;
-        virtual void printDot(void) const = 0; 
-        virtual void exportDot(void) const = 0; 
+        virtual void printDot() const = 0; 
+        virtual void exportDot(string filename) const = 0; 
 };
 /***********************************************************
     Function Definitions

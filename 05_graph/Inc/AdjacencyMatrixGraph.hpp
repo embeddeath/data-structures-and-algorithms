@@ -11,8 +11,9 @@
 ************************************************************/
 #include "Graph.hpp"
 #include <vector>
-
-using std::vector; 
+#include <string> 
+using std::vector;
+using std::string;  
 /***********************************************************
     Type Definitions
 ************************************************************/
@@ -58,7 +59,7 @@ class AdjacencyMatrixGraph : public Graph
         vector<int> getOutAdjacency(int u) const override; 
         void print(void) const override; 
         void printDot(void) const override;
-        void exportDot(void) const override; 
+        void exportDot(string filename) const override; 
     
 };
 /***********************************************************
