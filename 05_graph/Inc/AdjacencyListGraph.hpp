@@ -75,6 +75,10 @@ private:
     /* Search algorithm helpers*/
     void DFSPathUtil(int u, int target, vector<bool>& visited, vector<int>& parent, bool& found) const;
     bool BFSPathUtil(int start, int target, vector<int>& parent) const;
+
+    /* Sobrecarga de metodo para no tener que modificar el codigo existente*/
+    bool DFSPathUtil(int u, int target, int limit,
+                     std::vector<bool>& visited, std::vector<int>& parent, bool& found) const;
 public:
 
     explicit AdjacencyListGraph(int vertices);
@@ -103,6 +107,9 @@ public:
 
     /* Prim*/
     std::vector<Edge> primMST(int startVertex) const;
+
+    /* DLS (LLama internamente a la función con límite*/
+    std::vector<int> findPathDLS(int startVertex, int endVertex, int limit) const;
 };
 
 

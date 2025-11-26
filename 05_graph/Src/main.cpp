@@ -505,10 +505,101 @@ void PrimTest()
     cout << "========================================" << endl;
 }
 
+// DLSTest.cpp (o donde guardes tus funciones de prueba)
+
+#include "AdjacencyListGraph.hpp" 
+#include <iostream>
+#include <vector>
+#include <algorithm> 
+
+using namespace std;
+
+/**
+ * @brief Muestra el resultado de la búsqueda de camino.
+ */
+void printPathResult(const vector<int>& path, int start, int end, int limit)
+{
+    if (!path.empty())
+    {
+        cout << "  [EXITO]: Camino encontrado (Longitud: " << path.size() - 1 << "): ";
+        for (size_t i = 0; i < path.size(); ++i)
+        {
+            cout << path[i] << (i < path.size() - 1 ? " -> " : "");
+        }
+        cout << endl;
+    }
+    else
+    {
+        cout << "  [FALLO]: No se encontró camino de " << start << " a " << end 
+             << " con límite " << limit << "." << endl;
+    }
+}
+
+/**
+ * @brief Función de prueba para verificar la funcionalidad de la Búsqueda con Límite (DLS).
+ */
+void DLSTest()
+{
+    cout << "\n========================================" << endl;
+    cout << "       INICIO DE PRUEBAS DLS" << endl;
+    cout << "========================================" << endl;
+
+    // Grafo de Prueba (6 vértices: 0 a 5)
+    AdjacencyListGraph g(6);
+
+    // Conexiones: 
+    g.addEdge(0, 1, 1); 
+    g.addEdge(1, 3, 1);
+    g.addEdge(3, 5, 1); // Camino corto: 0 -> 1 -> 3 -> 5 (3 saltos)
+
+    g.addEdge(0, 2, 1);
+    g.addEdge(2, 4, 1); 
+    g.addEdge(4, 5, 1); // Camino 0 -> 2 -> 4 -> 5 (3 saltos)
+    
+    // Arista para crear un camino más largo: 0 -> 1 -> 3 -> 4 -> 5 (4 saltos)
+    g.addEdge(3, 4, 1); 
+
+    cout << "--- Estructura del Grafo ---" << endl;
+    g.print();
+    
+    int start = 0;
+    int end = 5;
+
+    // --- Caso 1: Límite Insuficiente ---
+    // El camino más corto es de 3 saltos. Límite = 2.
+    int limit1 = 2;
+    cout << "\n--- Prueba 1: Límite " << limit1 << " (Insuficiente) ---" << endl;
+    vector<int> path1 = g.findPathDLS(start, end, limit1);
+    printPathResult(path1, start, end, limit1);
+
+    // --- Caso 2: Límite Justo (Suficiente) ---
+    // Límite = Longitud del camino más corto.
+    int limit2 = 3; 
+    cout << "\n--- Prueba 2: Límite " << limit2 << " (Justo) ---" << endl;
+    vector<int> path2 = g.findPathDLS(start, end, limit2);
+    printPathResult(path2, start, end, limit2);
+
+    // --- Caso 3: Límite Amplio (DFS Normal) ---
+    // El límite es grande.
+    int limit3 = 10; 
+    cout << "\n--- Prueba 3: Límite " << limit3 << " (Amplio) ---" << endl;
+    vector<int> path3 = g.findPathDLS(start, end, limit3);
+    printPathResult(path3, start, end, limit3);
+
+    // 4. Exportar en formato DOT
+    g.exportDot("dlstest.dots"); 
+
+
+    cout << "========================================" << endl;
+    cout << "         FIN DE PRUEBAS DLS" << endl;
+    cout << "========================================" << endl;
+}
+
 int main(int argc, char* argv[])
 {
     DFStest(); 
     Dijkstratest();
     BFStest();
     PrimTest(); 
+    DLSTest();
 }

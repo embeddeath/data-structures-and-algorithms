@@ -525,3 +525,88 @@ vector<Edge> AdjacencyListGraph::primMST(int startVertex) const
     
     return mstEdges;
 }
+
+
+bool AdjacencyListGraph::DFSPathUtil(int u, int target, int limit,
+                                     std::vector<bool>& visited, std::vector<int>& parent, bool& found) const
+{
+    // CÓDIGO DE DLS: La verificación del límite es el punto clave
+    if (limit < 0) {
+        return false; 
+    }
+    
+    if (u == target)
+    {
+        found = true;
+        return true;
+    }
+
+    visited[u] = true;
+
+    for (unsigned int i = 0; i < adjList[u].size(); i++)
+    {
+        int neighbor = adjList[u][i].first; 
+
+        if (!visited[neighbor])
+        {
+            parent[neighbor] = u;
+            
+            // Llamada recursiva A LA MISMA FUNCIÓN SOBRECARGADA (limit - 1)
+            if (DFSPathUtil(neighbor, target, limit - 1, visited, parent, found))
+            {
+                return true; 
+            }
+        }
+    }
+    return false;
+}
+
+std::vector<int> AdjacencyListGraph::findPathDLS(int startVertex, int endVertex, int limit) const
+{
+    std::vector<int> path;
+
+    // 1. Validaciones
+    if (startVertex < 0 || startVertex >= numVertices || endVertex < 0 || endVertex >= numVertices) 
+    {
+        return path; // Retorna vacío si está fuera de rango
+    }
+    if (startVertex == endVertex)
+    {
+        return {startVertex};
+    }
+
+    // 2. Inicializar estructuras
+    std::vector<bool> visited(numVertices, false);
+    std::vector<int> parent(numVertices, -1);
+    bool found = false;
+    
+    parent[startVertex] = startVertex; 
+
+    // 3. Llamada a la función auxiliar (DLS)
+    DFSPathUtil(startVertex, endVertex, limit, visited, parent, found);
+    
+    // 4. Reconstrucción del Camino
+    if (found)
+    {
+        int curr = endVertex;
+        // La condición de parada es: 
+        // 1. curr == -1 (nunca debería pasar si 'found' es true)
+        // 2. parent[curr] == curr (Hemos llegado al nodo inicial)
+        while (curr != -1 && parent[curr] != curr) 
+        {
+            path.push_back(curr);
+            curr = parent[curr];
+        }
+        
+        // Agregar el nodo inicial (el bucle se detuvo justo antes de agregarlo)
+        if (curr != -1)
+        {
+             path.push_back(curr);
+        }
+
+        // El camino se construyó de fin a inicio, se revierte.
+        std::reverse(path.begin(), path.end()); 
+    }
+
+    return path;
+}
