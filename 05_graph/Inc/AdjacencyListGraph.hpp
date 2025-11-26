@@ -57,7 +57,7 @@ private:
     DijkstraResult_t DijkstraResult; 
     /* Search algorithm helpers*/
     void DFSPathUtil(int u, int target, vector<bool>& visited, vector<int>& parent, bool& found) const;
-
+    bool BFSPathUtil(int start, int target, vector<int>& parent) const;
 public:
 
     explicit AdjacencyListGraph(int vertices);
@@ -79,6 +79,9 @@ public:
     /* Dijkstra*/
     DijkstraResult_t dijkstra(int source) const;
     vector<int> getPath(const vector<int> &parent, int source, int target) const;
+    
+    /* BFS*/
+    vector<int> findPathBFS(int startVertex, int endVertex) const;
 };
 
 

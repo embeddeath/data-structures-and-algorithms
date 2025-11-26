@@ -373,7 +373,7 @@ void Dijkstratest()
         cout << "Error: Se encontró un camino, lo cual NO debería ocurrir." << endl;
     }
 
-    // Exportar el grafo hasta el final (ahora sí completo)
+    // Exportar el grafo hasta el final 
     g.exportDot("dijkstratest.dot");
 
     cout << "========================================" << endl;
@@ -381,8 +381,84 @@ void Dijkstratest()
     cout << "========================================" << endl;
 }
 
+void BFStest()
+{
+    cout << "\n========================================" << endl;
+    cout << "         INICIO DE PRUEBAS BFS PATH" << endl;
+    cout << "========================================" << endl;
+
+    // 1. Creación del Grafo de Prueba (6 vértices: 0 a 5)
+    AdjacencyListGraph g(6);
+
+    // Añadir aristas 
+    g.addEdge(0, 1, 1);
+    g.addEdge(0, 2, 1);
+    g.addEdge(1, 3, 1);
+    g.addEdge(2, 4, 1);
+    g.addEdge(3, 5, 1);
+    g.addEdge(4, 5, 1);
+    // Añadimos una arista que crea un camino más corto en saltos (0->5)
+    g.addEdge(0, 5, 10); 
+
+    cout << "--- Estructura del Grafo (Lista de Adyacencia) ---" << endl;
+    g.print();
+    
+    // 2. Prueba de Búsqueda de Camino (Función findPathBFS)
+
+    // Caso A: Camino Existente (0 -> 5). BFS encuentra el camino con el menor número de aristas.
+    int startA = 0;
+    int endA = 5;
+    cout << "\n--- Prueba de Camino Existente (" << startA << " -> " << endA << ") ---" << endl;
+    vector<int> pathA = g.findPathBFS(startA, endA);
+    
+    if (!pathA.empty())
+    {
+        cout << "Camino más corto (en saltos) encontrado: ";
+        for (unsigned int i = 0; i < pathA.size(); ++i)
+        {
+            cout << pathA[i];
+            if (i < pathA.size() - 1)
+            {
+                cout << " -> ";
+            }
+        }
+        cout << " (Longitud: " << pathA.size() - 1 << " aristas)" << endl;
+    }
+    else
+    {
+        cout << "Error: No se encontró el camino, pero debería existir." << endl;
+    }
+
+    // Caso B: Camino No Existente (Se intenta buscar un camino a un vértice fuera del rango inicial)
+    // El vértice 6 NO existe, por lo que la comprobación de límites debería fallar.
+    int startB = 0;
+    int endB = 6; 
+    cout << "\n--- Prueba de Camino No Existente (" << startB << " -> " << endB << ") ---" << endl;
+    
+    vector<int> pathB = g.findPathBFS(startB, endB);
+    
+    if (pathB.empty())
+    {
+        cout << "Prueba Exitosa: El camino entre " << startB << " y " << endB << " NO se encontró (esperado, índice fuera de rango)." << endl;
+    }
+    else
+    {
+        cout << "Error: Se encontró un camino, lo cual no debería haber ocurrido." << endl;
+    }
+    
+    // 3. Exportar en formato DOT 
+    cout << "\n--- Exportación en Formato DOT ---" << endl;
+    g.exportDot("bfstest.dot");
+
+
+    cout << "========================================" << endl;
+    cout << "         FIN DE PRUEBAS BFS PATH" << endl;
+    cout << "========================================" << endl;
+}
+
 int main(int argc, char* argv[])
 {
     DFStest(); 
     Dijkstratest();
+    BFStest();
 }

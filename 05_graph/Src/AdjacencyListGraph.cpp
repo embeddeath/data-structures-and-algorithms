@@ -13,13 +13,14 @@
 #include <fstream>
 #include <algorithm> // for remove_if
 #include <string>
+#include <queue>
 
 using std::cout;
 using std::endl;
 using std::ofstream;
 using std::cerr;
 using std::string; 
-
+using std::queue; 
 /***********************************************************
     Class Definitions
 ************************************************************/
@@ -371,6 +372,89 @@ vector<int> AdjacencyListGraph::getPath(const vector<int> &parent, int source, i
     // Si el camino no empieza en la fuente, no existe
     if (path[0] != source)
         return {};
+
+    return path;
+}
+
+bool AdjacencyListGraph::BFSPathUtil(int start, int target, vector<int>& parent) const
+{
+    // 1. Inicializar estructuras
+    vector<bool> visited(numVertices, false);
+    queue<int> q; // Utiliza una cola para BFS (Amplitud)
+
+    visited[start] = true;
+    parent[start] = -1; // El nodo inicial no tiene padre
+    q.push(start);
+
+    // 2. Proceso de Búsqueda
+    while (!q.empty())
+    {
+        int u = q.front();
+        q.pop();
+
+        // Si encontramos el objetivo, regresamos inmediatamente
+        if (u == target)
+        {
+            return true;
+        }
+
+        // Recorrer todos los vecinos (aristas) del vértice 'u'
+        for (unsigned int i = 0; i < adjList[u].size(); i++)
+        {
+            int neighbor = adjList[u][i].first;
+
+            if (!visited[neighbor])
+            {
+                // ¡Clave! Registrar el padre
+                visited[neighbor] = true;
+                parent[neighbor] = u; 
+                q.push(neighbor);
+            }
+        }
+    }
+    
+    return false; // El destino no fue alcanzado
+}
+
+/**
+ * @brief Encuentra el camino más corto (en número de aristas) entre dos vértices usando BFS.
+ * @param startVertex Vértice inicial.
+ * @param endVertex Vértice destino.
+ * @return Un vector con el camino encontrado, o un vector vacío si no existe.
+ */
+vector<int> AdjacencyListGraph::findPathBFS(int startVertex, int endVertex) const
+{
+    vector<int> path;
+    if (startVertex < 0 || endVertex < 0 || startVertex >= numVertices || endVertex >= numVertices)
+    {
+        cerr << "Error: Invalid start or end vertex for path search.\n";
+        return path;
+    }
+    if (startVertex == endVertex)
+    {
+        path.push_back(startVertex);
+        return path;
+    }
+
+    // Inicializar la Tabla de Padres (Parent Table)
+    vector<int> parent(numVertices, -1); 
+    
+    // Ejecutar la búsqueda BFS
+    bool found = BFSPathUtil(startVertex, endVertex, parent);
+    
+    // Reconstruir el camino si fue encontrado
+    if (found)
+    {
+        int curr = endVertex;
+        // Retrocede desde el destino hasta el origen (cuyo padre es -1)
+        while (curr != -1) 
+        {
+            path.push_back(curr);
+            curr = parent[curr];
+        }
+        // Invertir el camino para que vaya de inicio a fin
+        std::reverse(path.begin(), path.end()); 
+    }
 
     return path;
 }
