@@ -311,3 +311,66 @@ vector<int> AdjacencyListGraph::findPathDFS(int startVertex, int endVertex) cons
 
     return path;
 }
+
+/* Dijkstra */
+DijkstraResult_t AdjacencyListGraph::dijkstra(int source) const
+{
+    const int INF = 1e9;
+    vector<int> dist(numVertices, INF);
+    vector<int> parent(numVertices, -1);
+    vector<bool> visited(numVertices, false);
+
+    dist[source] = 0;
+
+    for (int count = 0; count < numVertices - 1; count++)
+    {
+        int u = -1;
+        int minDist = INF;
+
+        // 1. Elegir el nodo no visitado con menor distancia
+        for (int i = 0; i < numVertices; i++)
+        {
+            if (!visited[i] && dist[i] < minDist)
+            {
+                minDist = dist[i];
+                u = i;
+            }
+        }
+
+        if (u == -1)
+            break;
+
+        visited[u] = true;
+
+        // 2. Relajar sus vecinos
+        for (const auto &edge : adjList[u])
+        {
+            int v = edge.first;
+            int weight = edge.second;
+
+            if (!visited[v] && dist[u] + weight < dist[v])
+            {
+                dist[v] = dist[u] + weight;
+                parent[v] = u;  // guardar el camino
+            }
+        }
+    }
+
+    return {dist, parent};
+}
+
+vector<int> AdjacencyListGraph::getPath(const vector<int> &parent, int source, int target) const
+{
+    vector<int> path;
+
+    for (int v = target; v != -1; v = parent[v])
+        path.push_back(v);
+
+    reverse(path.begin(), path.end());
+
+    // Si el camino no empieza en la fuente, no existe
+    if (path[0] != source)
+        return {};
+
+    return path;
+}

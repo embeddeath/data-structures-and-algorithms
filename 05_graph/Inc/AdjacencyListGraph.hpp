@@ -44,15 +44,22 @@ using std::pair;
  * and print the list matrix. Inherits from the abstract Graph class.
  */
 
+
+typedef struct DijkstraResult {
+    vector<int> dist;
+    vector<int> parent;
+}DijkstraResult_t;
+
 class AdjacencyListGraph : public Graph
 {
 private:
     vector<vector<pair<int,int>>> adjList;
-
+    DijkstraResult_t DijkstraResult; 
     /* Search algorithm helpers*/
     void DFSPathUtil(int u, int target, vector<bool>& visited, vector<int>& parent, bool& found) const;
 
 public:
+
     explicit AdjacencyListGraph(int vertices);
 
     void addEdge(int u, int v, int weight = 1) override;
@@ -67,8 +74,15 @@ public:
     void exportDot(string filename) const override;
 
     /* Search algorithms*/
+    /* DFS*/
     vector<int> findPathDFS(int startVertex, int endVertex) const;
+    /* Dijkstra*/
+    DijkstraResult_t dijkstra(int source) const;
+    vector<int> getPath(const vector<int> &parent, int source, int target) const;
 };
+
+
+
 /***********************************************************
     Function Definitions
 ************************************************************/

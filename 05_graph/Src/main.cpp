@@ -293,7 +293,96 @@ void DFStest()
     cout << "         FIN DE PRUEBAS DFS PATH" << endl;
     cout << "========================================" << endl;
 }
-int main (int argc, char* argv[])
+
+void Dijkstratest()
+{
+    cout << "========================================" << endl;
+    cout << "        INICIO DE PRUEBAS DIJKSTRA" << endl;
+    cout << "========================================" << endl;
+
+    // 1. Crear el Grafo (7 vértices: 0 a 6)
+    // El nodo 6 quedará completamente desconectado
+    AdjacencyListGraph g(7);
+
+    // Aristas para probar rutas óptimas
+    g.addEdge(0, 1, 2);
+    g.addEdge(0, 2, 5);
+    g.addEdge(1, 2, 1);
+    g.addEdge(1, 3, 2);
+    g.addEdge(2, 4, 3);
+    g.addEdge(3, 4, 2);
+    g.addEdge(3, 5, 5);
+    g.addEdge(4, 5, 1);
+
+    // Nodo 6 se queda completamente desconectado
+
+    cout << "--- Estructura del Grafo ---" << endl;
+    g.print();
+
+    // -------------------------------------------------
+    // Caso A: Camino EXISTENTE (0 -> 5)
+    // -------------------------------------------------
+    int startA = 0;
+    int endA   = 5;
+
+    cout << "\n--- Prueba de Camino Existente (" 
+         << startA << " -> " << endA << ") ---" << endl;
+
+    DijkstraResult resultA = g.dijkstra(startA);
+    vector<int> pathA = g.getPath(resultA.parent, startA, endA);
+
+    if (!pathA.empty())
+    {
+        cout << "Distancia mínima: " << resultA.dist[endA] << endl;
+
+        cout << "Camino encontrado: ";
+        for (unsigned int i = 0; i < pathA.size(); ++i)
+        {
+            cout << pathA[i];
+            if (i < pathA.size() - 1)
+                cout << " -> ";
+        }
+        cout << endl;
+    }
+    else
+    {
+        cout << "Error: No se encontró el camino, pero debería existir." << endl;
+    }
+
+    // -------------------------------------------------
+    // Caso B: Camino NO existente (0 -> 6)
+    // Nodo 6 está desconectado desde el inicio
+    // -------------------------------------------------
+    int startB = 0;
+    int endB   = 6;
+
+    cout << "\n--- Prueba de Camino No Existente ("
+         << startB << " -> " << endB << ") ---" << endl;
+
+    DijkstraResult resultB = g.dijkstra(startB);
+    vector<int> pathB = g.getPath(resultB.parent, startB, endB);
+
+    if (pathB.empty())
+    {
+        cout << "Prueba Exitosa: El camino entre " 
+             << startB << " y " << endB 
+             << " NO se encontró (esperado)." << endl;
+    }
+    else
+    {
+        cout << "Error: Se encontró un camino, lo cual NO debería ocurrir." << endl;
+    }
+
+    // Exportar el grafo hasta el final (ahora sí completo)
+    g.exportDot("dijkstratest.dot");
+
+    cout << "========================================" << endl;
+    cout << "        FIN DE PRUEBAS DIJKSTRA" << endl;
+    cout << "========================================" << endl;
+}
+
+int main(int argc, char* argv[])
 {
     DFStest(); 
+    Dijkstratest();
 }
