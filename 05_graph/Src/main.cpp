@@ -456,9 +456,59 @@ void BFStest()
     cout << "========================================" << endl;
 }
 
+void PrimTest()
+{
+    cout << "\n========================================" << endl;
+    cout << "       INICIO DE PRUEBAS MST (Prim)" << endl;
+    cout << "========================================" << endl;
+
+    // 1. Creación del Grafo de Prueba (6 vértices: 0 a 5)
+    AdjacencyListGraph g(6);
+
+    // Añadir aristas y pesos
+    g.addEdge(0, 1, 10);
+    g.addEdge(0, 2, 6);
+    g.addEdge(0, 3, 5); 
+    g.addEdge(1, 3, 15);
+    g.addEdge(2, 3, 4); 
+    g.addEdge(2, 4, 12);
+    g.addEdge(3, 4, 11);
+    g.addEdge(4, 5, 8); 
+
+    cout << "--- Estructura del Grafo (Lista de Adyacencia) ---" << endl;
+    g.print();
+    
+    // 2. Ejecutar Prim desde el nodo 3
+    int startNode = 3;
+    cout << "\n--- Ejecutando Algoritmo de Prim desde el nodo " << startNode << " ---" << endl;
+    
+    vector<Edge> mst = g.primMST(startNode); 
+    
+    // 3. Mostrar el resultado
+    int totalWeight = 0;
+    cout << "Aristas del Arbol de Expansion Minima (MST):" << endl;
+    for (const auto& edge : mst)
+    {
+        cout << "  Arista: " << edge.from << " -- " << edge.to << " (Peso: " << edge.weight << ")" << endl;
+        totalWeight += edge.weight;
+    }
+    
+    cout << "\nPeso Total del MST: " << totalWeight << " (Esperado: 38)" << endl;
+    
+    // 4. Exportar en formato DOT
+    cout << "\n--- Exportación en Formato DOT ---" << endl;
+
+    g.exportDot("primtest.dot");
+
+    cout << "========================================" << endl;
+    cout << "         FIN DE PRUEBAS MST (Prim)" << endl;
+    cout << "========================================" << endl;
+}
+
 int main(int argc, char* argv[])
 {
     DFStest(); 
     Dijkstratest();
     BFStest();
+    PrimTest(); 
 }

@@ -21,6 +21,7 @@ using std::ofstream;
 using std::cerr;
 using std::string; 
 using std::queue; 
+using std::priority_queue; 
 /***********************************************************
     Class Definitions
 ************************************************************/
@@ -457,4 +458,70 @@ vector<int> AdjacencyListGraph::findPathBFS(int startVertex, int endVertex) cons
     }
 
     return path;
+}
+
+vector<Edge> AdjacencyListGraph::primMST(int startVertex) const
+{
+    vector<Edge> mstEdges;
+
+    // 1. Validación y configuración inicial
+    if (startVertex < 0 || startVertex >= numVertices)
+    {
+        cerr << "Error: Invalid starting vertex for Prim's algorithm.\n";
+        return mstEdges;
+    }
+
+    // Cola de prioridad: Se utiliza la clase comparadora CompareEdge
+    priority_queue<Edge, vector<Edge>, CompareEdge> pq;
+    vector<bool> visited(numVertices, false);
+    
+    visited[startVertex] = true;
+
+    // Agregar todas las aristas del vértice inicial
+    for (unsigned int i = 0; i < adjList[startVertex].size(); i++)
+    {
+        const auto& edge = adjList[startVertex][i];
+        pq.push({startVertex, edge.first, edge.second});
+    }
+
+    // 2. Proceso de Prim
+    while (!pq.empty())
+    {
+        Edge currentEdge = pq.top();
+        pq.pop();
+
+        int v_dest = currentEdge.to;
+
+        // Si el destino ya está en el MST, ignorar
+        if (visited[v_dest])
+        {
+            continue;
+        }
+
+        // Añadir la arista al MST y marcar el nodo como visitado
+        visited[v_dest] = true;
+        mstEdges.push_back(currentEdge);
+
+        // Optimización
+        if (mstEdges.size() == (unsigned int)numVertices - 1)
+        {
+            break;
+        }
+
+        // 3. Explorar vecinos del nuevo vértice 'v_dest'
+        for (unsigned int i = 0; i < adjList[v_dest].size(); i++)
+        {
+            const auto& nextEdge = adjList[v_dest][i];
+            int neighbor = nextEdge.first;
+            int weight = nextEdge.second;
+
+            if (!visited[neighbor])
+            {
+                // Agregar la nueva arista a la cola
+                pq.push({v_dest, neighbor, weight});
+            }
+        }
+    }
+    
+    return mstEdges;
 }

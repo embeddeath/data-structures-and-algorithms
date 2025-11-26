@@ -44,6 +44,23 @@ using std::pair;
  * and print the list matrix. Inherits from the abstract Graph class.
  */
 
+struct Edge
+{
+    int from;
+    int to;
+    int weight;
+};
+
+struct CompareEdge
+{
+    // El operador () realiza la comparación
+    bool operator()(const Edge& a, const Edge& b) const
+    {
+        // Retorna true si 'a' tiene mayor peso que 'b'. 
+        // Esto invierte el orden del max-heap predeterminado a un min-heap.
+        return a.weight > b.weight;
+    }
+};
 
 typedef struct DijkstraResult {
     vector<int> dist;
@@ -76,12 +93,16 @@ public:
     /* Search algorithms*/
     /* DFS*/
     vector<int> findPathDFS(int startVertex, int endVertex) const;
+
     /* Dijkstra*/
     DijkstraResult_t dijkstra(int source) const;
     vector<int> getPath(const vector<int> &parent, int source, int target) const;
-    
+
     /* BFS*/
     vector<int> findPathBFS(int startVertex, int endVertex) const;
+
+    /* Prim*/
+    std::vector<Edge> primMST(int startVertex) const;
 };
 
 
